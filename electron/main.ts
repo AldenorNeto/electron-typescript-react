@@ -1,6 +1,7 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, Tray } from 'electron'
 
 let mainWindow: BrowserWindow | null
+let tray: Tray | null
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
@@ -12,10 +13,14 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
 function createWindow () {
   mainWindow = new BrowserWindow({
-    // icon: path.join(assetsPath, 'assets', 'icon.png'),
+    icon: './assets/ibrain.png',
     width: 1100,
     height: 700,
-    backgroundColor: '#191622',
+    show: false,
+    frame: false,
+    transparent: true,
+    resizable: false,
+    skipTaskbar: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -28,18 +33,39 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  mainWindow.minimize();
 }
 
+function createTray () {
+  tray = new Tray('./assets/ibrain.png');
+
+  tray.setToolTip('Meu App Tray');
+
+  tray.on('click', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      } else {
+        mainWindow.minimize();
+      }
+    }
+  });
+}
+
+
 async function registerListeners () {
-  /**
-   * This comes from bridge integration, check bridge.ts
-   */
   ipcMain.on('message', (_, message) => {
     console.log(message)
   })
 }
 
 app.on('ready', createWindow)
+  .whenReady()
+  .then(registerListeners)
+  .catch(e => console.error(e))
+
+app.on('ready', createTray)
   .whenReady()
   .then(registerListeners)
   .catch(e => console.error(e))
@@ -53,5 +79,6 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
+    createTray()
   }
 })
