@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Tray } from 'electron'
+import { app, BrowserWindow, ipcMain, Tray, screen } from 'electron'
 
 let mainWindow: BrowserWindow | null
 let tray: Tray | null
@@ -6,16 +6,11 @@ let tray: Tray | null
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
-// const assetsPath =
-//   process.env.NODE_ENV === 'production'
-//     ? process.resourcesPath
-//     : app.getAppPath()
+function createWindow() {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
-function createWindow () {
   mainWindow = new BrowserWindow({
     icon: './assets/ibrain.png',
-    width: 1100,
-    height: 700,
     show: false,
     frame: false,
     transparent: true,
@@ -24,8 +19,15 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
-    }
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+    },
+  })
+
+  mainWindow.setBounds({
+    x: Math.floor(width * 0.865),
+    y: height - 300,
+    width: 250,
+    height: 350,
   })
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
@@ -34,41 +36,50 @@ function createWindow () {
     mainWindow = null
   })
 
-  mainWindow.minimize();
+  setInterval(() => {
+    if (mainWindow) {
+      if (!mainWindow.isFocused()) {
+        mainWindow.minimize()
+      }
+    }
+  }, 1000)
+
+  mainWindow.minimize()
 }
 
-function createTray () {
-  tray = new Tray('./assets/ibrain.png');
+function createTray() {
+  tray = new Tray('./assets/ibrain.png')
 
-  tray.setToolTip('Meu App Tray');
+  tray.setToolTip('IBRAIN')
 
   tray.on('click', () => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) {
-        mainWindow.restore();
+        mainWindow.restore()
       } else {
-        mainWindow.minimize();
+        mainWindow.minimize()
       }
     }
-  });
+  })
 }
 
-
-async function registerListeners () {
+async function registerListeners() {
   ipcMain.on('message', (_, message) => {
     console.log(message)
   })
 }
 
-app.on('ready', createWindow)
+app
+  .on('ready', createWindow)
   .whenReady()
   .then(registerListeners)
-  .catch(e => console.error(e))
+  .catch((e) => console.error(e))
 
-app.on('ready', createTray)
+app
+  .on('ready', createTray)
   .whenReady()
   .then(registerListeners)
-  .catch(e => console.error(e))
+  .catch((e) => console.error(e))
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

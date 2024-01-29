@@ -3791,6 +3791,14 @@ electron-to-chromium@^1.4.648:
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.648.tgz"
   integrity sha512-EmFMarXeqJp9cUKu/QEciEApn0S/xRcpZWuAm32U7NgoZCimjsilKXHRO9saeEW55eHZagIDg6XTUOv32w9pjg==
 
+electron-window-state@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.npmjs.org/electron-window-state/-/electron-window-state-5.0.3.tgz"
+  integrity sha512-1mNTwCfkolXl3kMf50yW3vE2lZj0y92P/HYWFBrb+v2S/pCka5mdwN3cagKm458A7NjndSwijynXgcLWRodsVg==
+  dependencies:
+    jsonfile "^4.0.0"
+    mkdirp "^0.5.1"
+
 electron-winstaller@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/electron-winstaller/-/electron-winstaller-5.0.0.tgz"
