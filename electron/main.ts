@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Tray, screen } from 'electron'
+import { BrowserWindow, Tray, app, ipcMain, screen } from 'electron'
 
 let mainWindow: BrowserWindow | null
 let tray: Tray | null
@@ -14,7 +14,7 @@ function createWindow() {
     show: false,
     frame: false,
     transparent: true,
-    resizable: false,
+    // resizable: false,
     skipTaskbar: true,
     webPreferences: {
       nodeIntegration: false,

@@ -1,48 +1,61 @@
-import styled, { keyframes } from 'styled-components'
-
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`
+import styled from 'styled-components'
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   color: #ffffff;
   background-color: #39393980;
   border-radius: 10px;
   user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
-  padding: 25px;
-  flex-direction: column;
-  animation: slideIn 1s forwards;
+  gap: 5px;
+  padding: 5px;
   transform-origin: bottom center;
 
-  @keyframes slideIn {
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  h2 {
+    margin-bottom: 5px;
+  }
+
+  input[type='checkbox'] {
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  label {
+    width: 100%;
+  }
+
+  s {
+    text-decoration: line-through;
   }
 `
 
-export const Image = styled.img`
-  width: 240px;
-  animation: ${rotate} 15s linear infinite;
+export const Taks = styled.div`
+  transition: background-color 0.3s;
+  border-radius: 5px;
+  width: 100%;
+  padding: 5px;
+
+  &:hover {
+    background-color: #fff1;
+  }
 `
 
-export const Text = styled.p`
-  margin-top: 24px;
-  font-size: 18px;
+export const ESC = styled.div`
+  background-color: #fff1;
+  position: absolute;
+  border-radius: 9999px;
+  top: 0;
+  right: 0;
+  font-size: 10%;
+
+  * {
+    font-size: 10%;
+  }
+
+  &:hover {
+    background-color: #c44;
+  }
 `

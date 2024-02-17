@@ -1,4 +1,9 @@
-import { useState } from 'react'
+import { X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useStorage } from '../../contexts/storageContext'
+import { api, clearToken } from '../../service/todoistApi'
+import { Login } from '../Login'
+import { Container, ESC, Taks } from './styles'
 
 interface CheckItems {
   id: number
@@ -6,8 +11,10 @@ interface CheckItems {
 }
 
 export function CheckboxList() {
+  const { localToken, setLocalToken } = useStorage()
+
   const [uncheckedItems, setUncheckedItems] = useState<CheckItems[]>([
-    { id: 1, label: 'Item 1' },
+    { id: 1, label: 'Item 1 nem tudo que parece é, ta ligado?' },
     { id: 2, label: 'Item 2' },
     { id: 3, label: 'Item 3' },
   ])
@@ -29,38 +36,71 @@ export function CheckboxList() {
     }
   }
 
-  return (
-    <div>
-      <div>
-        <h2>Não Marcados</h2>
-        {uncheckedItems.map((item) => (
-          <div key={item.id}>
-            <input
-              type="checkbox"
-              id={`item${item.id}`}
-              name={`item${item.id}`}
-              onChange={(e) => moveItem(item, e.target.checked)}
-            />
-            <label htmlFor={`item${item.id}`}>{item.label}</label>
-          </div>
-        ))}
-      </div>
+  const getProjects = async (localToken: string | null) => {
+    api(localToken)
+      .getProjects()
+      .then((projects) => console.log(projects))
+      .catch((error) => console.log(error))
+  }
 
-      <div>
-        <h2>Marcados</h2>
-        {checkedItems.map((item) => (
-          <div key={item.id}>
-            <input
-              type="checkbox"
-              id={`item${item.id}`}
-              name={`item${item.id}`}
-              checked
-              onChange={(e) => moveItem(item, e.target.checked)}
-            />
-            <label htmlFor={`item${item.id}`}>{item.label}</label>
-          </div>
-        ))}
-      </div>
-    </div>
+  useEffect(() => {
+    getProjects(localToken)
+  }, [localToken])
+
+  const escButton = () => {
+    clearToken()
+    setLocalToken(null)
+  }
+
+  if (!localToken) {
+    return <Login />
+  }
+
+  return (
+    <Container>
+      <ESC>
+        <X size={16} onClick={escButton} />
+      </ESC>
+      {uncheckedItems.length ? (
+        <div>
+          <h2>Não Marcados</h2>
+          {uncheckedItems.map((item) => (
+            <Taks key={item.id} onClick={() => moveItem(item, true)}>
+              <input
+                type="checkbox"
+                id={`item${item.id}`}
+                name={`item${item.id}`}
+                onChange={() => moveItem(item, true)}
+              />
+              <label htmlFor={`item${item.id}`}>{item.label}</label>
+            </Taks>
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {checkedItems.length ? (
+        <div>
+          <h2>Marcados</h2>
+          {checkedItems.map((item) => (
+            <Taks key={item.id} onClick={() => moveItem(item, false)}>
+              <input
+                type="checkbox"
+                id={`item${item.id}`}
+                name={`item${item.id}`}
+                checked
+                onChange={() => moveItem(item, false)}
+              />
+              <s>
+                <label htmlFor={`item${item.id}`}>{item.label}</label>
+              </s>
+            </Taks>
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
+    </Container>
   )
 }
