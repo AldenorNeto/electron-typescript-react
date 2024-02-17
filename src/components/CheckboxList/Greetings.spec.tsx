@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react'
 
-import { Greetings } from './index'
+import { CheckboxList } from './index'
 
 test('Greetings should renders', () => {
-  const { getByText, getByAltText } = render(<Greetings />)
+  const { getByText, getByAltText } = render(<CheckboxList />)
 
   expect(
     getByText('An Electron boilerplate including TypeScript, React, Jest and ESLint.')

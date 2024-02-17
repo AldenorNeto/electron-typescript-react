@@ -21,12 +21,9 @@ export const Container = styled.div`
   justify-content: center;
   height: 100vh;
   padding: 25px;
-  display: flex;
   flex-direction: column;
   animation: slideIn 1s forwards;
   transform-origin: bottom center;
-  align-items: center;
-  justify-content: center;
 
   @keyframes slideIn {
     from {

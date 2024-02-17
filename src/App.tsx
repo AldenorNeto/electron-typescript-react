@@ -1,11 +1,11 @@
 import { GlobalStyle } from './styles/GlobalStyle'
-import { Greetings } from './components/Greetings'
+import { CheckboxList } from './components/CheckboxList'
 
 export function App() {
   return (
     <>
       <GlobalStyle />
-      <Greetings />
+      <CheckboxList />
     </>
   )
 }
