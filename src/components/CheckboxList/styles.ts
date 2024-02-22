@@ -1,4 +1,12 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const fadeInOut = keyframes`
+  100% {
+    background-color: #fff0;
+    color: #fff0;
+    border: #fff0;
+  }
+`
 
 export const Container = styled.div`
   display: flex;
@@ -13,6 +21,7 @@ export const Container = styled.div`
   gap: 5px;
   padding: 5px;
   transform-origin: bottom center;
+  overflow-y: auto;
 
   h2 {
     margin-bottom: 5px;
@@ -41,6 +50,47 @@ export const Taks = styled.div`
   &:hover {
     background-color: #fff1;
   }
+
+  input[type='checkbox']:checked + label {
+    text-decoration: line-through;
+    opacity: 0.5;
+    animation: ${fadeInOut} 1s ease-in-out forwards;
+  }
+`
+
+export const CustomCheckbox = styled.input`
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #aaa;
+  outline: none;
+
+  &:checked {
+    background-color: #fff;
+    border-color: #555;
+    animation: ${fadeInOut} 1s ease-in-out forwards;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:checked::after {
+    content: '✔';
+    font-size: 12px;
+    color: #555;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`
+
+export const TaskLabel = styled.label`
+  width: 100%;
 `
 
 export const ESC = styled.div`

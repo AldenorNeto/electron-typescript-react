@@ -4,5 +4,5 @@ export const apiToken = () => localStorage.getItem('todoist')
 
 export const clearToken = () => localStorage.clear()
 
-export const api = (localToken: string | null) =>
+export const API = (localToken: string | null) =>
   new TodoistApi(localToken ?? '')

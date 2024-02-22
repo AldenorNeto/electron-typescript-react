@@ -24,7 +24,7 @@ function createWindow() {
   })
 
   mainWindow.setBounds({
-    x: Math.floor(width * 0.865),
+    x: width - 300,
     y: height - 300,
     width: 250,
     height: 350,
@@ -39,7 +39,7 @@ function createWindow() {
   setInterval(() => {
     if (mainWindow) {
       if (!mainWindow.isFocused()) {
-        mainWindow.minimize()
+        // mainWindow.minimize()
       }
     }
   }, 1000)
